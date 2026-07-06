@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Solutions — Ek jagah, PDF ka har kaam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-dim:#F6F7F9;
+    --ink:#14213D;
+    --ink-soft:#4B5875;
+    --line:#E3E6EB;
+    --stamp:#E63946;
+    --stamp-dark:#C81E2C;
+    --teal:#2A9D8F;
+    --teal-dark:#1F7A70;
+    --shadow-soft:rgba(20,33,61,.18);
+    --mono:'IBM Plex Mono', monospace;
+    --display:'Space Grotesk', sans-serif;
+    --body:'Inter', sans-serif;
+    --radius:14px;
+  }
+  html[data-theme="dark"]{
+    --paper:#12182B;
+    --paper-dim:#1A2138;
+    --ink:#EDEFF5;
+    --ink-soft:#98A2BE;
+    --line:#2A3350;
+    --stamp:#FF6B76;
+    --stamp-dark:#FF8790;
+    --teal:#3FC2B0;
+    --teal-dark:#5AD4C3;
+    --shadow-soft:rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html, body{transition:background-color .3s ease, color .3s ease;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--body); line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  h1,h2,h3{font-family:var(--display); margin:0; letter-spacing:-0.02em;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:40; background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+  }
+  .header-row{display:flex; align-items:center; gap:24px; padding:16px 28px; max-width:1180px; margin:0 auto;}
+  .theme-toggle{
+    width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--paper-dim);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink);
+    transition:background .2s, transform .2s, border-color .2s;
+  }
+  .theme-toggle:hover{border-color:var(--teal); transform:rotate(15deg);}
+  .theme-toggle svg{width:18px; height:18px;}
+  .theme-toggle .moon{display:none;}
+  html[data-theme="dark"] .theme-toggle .sun{display:none;}
+  html[data-theme="dark"] .theme-toggle .moon{display:block;}
+  .hamburger{
+    display:none; width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--paper-dim);
+    cursor:pointer; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .hamburger span, .hamburger span::before, .hamburger span::after{
+    content:''; display:block; width:16px; height:2px; background:var(--ink); position:relative; transition:transform .2s, opacity .2s;
+  }
+  .hamburger span::before{position:absolute; top:-5px;}
+  .hamburger span::after{position:absolute; top:5px;}
+  .hamburger.open span{background:transparent;}
+  .hamburger.open span::before{transform:translateY(5px) rotate(45deg);}
+  .hamburger.open span::after{transform:translateY(-5px) rotate(-45deg);}
+  .logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:20px; white-space:nowrap;}
+  .logo-mark{width:30px; height:36px; position:relative; flex-shrink:0;}
+  .logo-mark svg{width:100%; height:100%; display:block;}
+  .search-box{flex:1; max-width:420px; position:relative;}
+  .search-box input{
+    width:100%; padding:10px 14px 10px 38px; border-radius:999px; border:1px solid var(--line);
+    background:var(--paper-dim); font-family:var(--body); font-size:14px; color:var(--ink); outline:none;
+    transition:border-color .15s;
+  }
+  .search-box input:focus{border-color:var(--teal);}
+  .search-box svg{position:absolute; left:13px; top:50%; transform:translateY(-50%); width:16px; height:16px; opacity:.5;}
+  nav.cats{display:flex; gap:4px; overflow-x:auto; scrollbar-width:none;}
+  nav.cats::-webkit-scrollbar{display:none;}
+  nav.cats a{
+    font-size:13px; font-weight:600; color:var(--ink-soft); text-decoration:none;
+    padding:8px 12px; border-radius:8px; white-space:nowrap; transition:background .15s, color .15s;
+  }
+  nav.cats a:hover{background:var(--paper-dim); color:var(--ink);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:72px 28px 56px; position:relative; overflow:hidden;}
+  .hero-grid{max-width:1180px; margin:0 auto; display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--teal-dark); background:#EAF6F4;
+    padding:6px 12px; border-radius:999px; margin-bottom:18px;
+  }
+  .eyebrow::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--teal);}
+  .hero h1{font-size:clamp(34px,4.6vw,56px); line-height:1.05; margin-bottom:18px; animation:heroFade .6s cubic-bezier(.2,.7,.3,1) .05s backwards;}
+  .hero h1 em{font-style:normal; color:var(--stamp); position:relative; transition:color .3s;}
+  .hero p.sub{font-size:17px; color:var(--ink-soft); max-width:520px; margin-bottom:28px; animation:heroFade .6s cubic-bezier(.2,.7,.3,1) .15s backwards;}
+  .hero-cta{display:flex; gap:14px; flex-wrap:wrap; animation:heroFade .6s cubic-bezier(.2,.7,.3,1) .25s backwards;}
+  .eyebrow{animation:heroFade .6s cubic-bezier(.2,.7,.3,1) backwards;}
+  .stack{animation:heroFade .7s cubic-bezier(.2,.7,.3,1) .2s backwards;}
+  .btn{
+    font-family:var(--body); font-weight:600; font-size:15px; padding:13px 24px; border-radius:10px;
+    border:none; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .12s, box-shadow .12s;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--stamp); color:#fff; box-shadow:0 6px 16px rgba(230,57,70,.28);}
+  .btn-primary:hover{background:var(--stamp-dark);}
+  .btn-ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  /* stack of pages illustration */
+  .stack{position:relative; height:340px;}
+  .sheet{
+    position:absolute; width:220px; height:290px; background:var(--paper); border:1px solid var(--line);
+    border-radius:6px; box-shadow:0 20px 40px -12px rgba(20,33,61,.18); left:50%; top:10px;
+  }
+  .sheet .fold{position:absolute; top:0; right:0; width:28px; height:28px; background:var(--paper-dim); border-left:1px solid var(--line); border-bottom:1px solid var(--line); border-bottom-right-radius:6px;}
+  .sheet.s1{transform:translateX(-50%) rotate(-9deg); background:#FBFBFC;}
+  .sheet.s2{transform:translateX(-58%) rotate(-2deg); top:26px;}
+  .sheet.s3{transform:translateX(-42%) rotate(8deg); top:4px; z-index:2;}
+  .sheet .line{position:absolute; left:22px; right:40px; height:8px; background:var(--line); border-radius:4px;}
+  .sheet .badge{position:absolute; bottom:20px; left:22px; font-family:var(--mono); font-size:11px; color:var(--stamp); border:1.5px solid var(--stamp); padding:3px 8px; border-radius:5px; transform:rotate(-6deg);}
+
+  /* ---------- How it works ---------- */
+  .how{padding:20px 28px 64px;}
+  .how-inner{max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .step{padding:22px; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper-dim);}
+  .step .num{font-family:var(--mono); font-size:12px; color:var(--teal-dark); margin-bottom:10px; display:block;}
+  .step h3{font-size:17px; margin-bottom:6px;}
+  .step p{margin:0; font-size:14px; color:var(--ink-soft);}
+
+  /* ---------- Categories / tool grid ---------- */
+  .category{padding:36px 28px;}
+  .category-inner{max-width:1180px; margin:0 auto;}
+  .cat-head{display:flex; align-items:baseline; gap:14px; margin-bottom:20px; flex-wrap:wrap;}
+  .cat-head h2{font-size:24px;}
+  .cat-head .count{font-family:var(--mono); font-size:12px; color:var(--ink-soft); background:var(--paper-dim); padding:4px 10px; border-radius:999px; border:1px solid var(--line);}
+  .cat-desc{font-size:14px; color:var(--ink-soft); margin:-10px 0 20px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px;}
+
+  @keyframes revealUp{ from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes heroFade{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+  .reveal{opacity:0;}
+  .reveal.in-view{animation:revealUp .55s cubic-bezier(.2,.7,.3,1) forwards;}
+
+  .card{
+    position:relative; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper);
+    padding:20px; cursor:pointer; overflow:hidden;
+    transition:border-color .2s ease, box-shadow .25s ease, transform .25s cubic-bezier(.2,.7,.3,1), background-color .3s;
+  }
+  .card:hover{border-color:var(--teal); box-shadow:0 14px 30px -12px var(--shadow-soft); transform:translateY(-4px) scale(1.015);}
+  .card:active{transform:translateY(-1px) scale(1.005);}
+  .card .icon{transition:transform .3s cubic-bezier(.3,.6,.3,1.4);}
+  .card:hover .icon{transform:scale(1.12) rotate(-4deg);}
+  .card .fold-corner{
+    position:absolute; top:0; right:0; width:0; height:0;
+    border-style:solid; border-width:0 26px 26px 0; border-color:transparent var(--paper-dim) transparent transparent;
+    transition:border-width .18s;
+  }
+  .card:hover .fold-corner{border-width:0 34px 34px 0; border-color:transparent var(--teal) transparent transparent;}
+  .card .icon{width:34px; height:34px; margin-bottom:14px; color:var(--stamp);}
+  .card.soon .icon{color:var(--ink-soft);}
+  .card h4{font-family:var(--display); font-size:16px; margin-bottom:6px; font-weight:600;}
+  .card p{font-size:12.5px; color:var(--ink-soft); margin:0; line-height:1.45;}
+  .tag-soon{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:10px; letter-spacing:.04em;
+    color:#8a6d1f; background:#FDF3D8; border:1px solid #F0DFA0; padding:2px 8px; border-radius:6px;
+  }
+  .tag-ready{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:10px; letter-spacing:.04em;
+    color:var(--teal-dark); background:#EAF6F4; border:1px solid #BFE6E0; padding:2px 8px; border-radius:6px;
+  }
+  .hidden{display:none !important;}
+
+  /* ---------- Modal ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(20,33,61,.55); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; opacity:0; pointer-events:none;
+    transition:opacity .18s;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .modal{
+    background:var(--paper); border-radius:16px; width:100%; max-width:560px; max-height:88vh; overflow-y:auto;
+    padding:28px; position:relative; box-shadow:0 30px 60px -14px rgba(20,33,61,.35);
+    transform:translateY(14px); transition:transform .18s;
+  }
+  .overlay.open .modal{transform:translateY(0);}
+  .modal .close{
+    position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:8px; border:1px solid var(--line);
+    background:var(--paper-dim); cursor:pointer; font-size:16px; color:var(--ink-soft); display:flex; align-items:center; justify-content:center;
+  }
+  .modal-eyebrow{font-family:var(--mono); font-size:11px; color:var(--teal-dark); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;}
+  .modal h3{font-size:22px; margin-bottom:8px;}
+  .modal .desc{font-size:14px; color:var(--ink-soft); margin-bottom:20px;}
+
+  .drop{
+    border:1.5px dashed var(--line); border-radius:12px; padding:26px; text-align:center; cursor:pointer;
+    background:var(--paper-dim); transition:border-color .15s, background .15s; margin-bottom:16px;
+  }
+  .drop:hover, .drop.drag{border-color:var(--teal); background:#F0FAF8;}
+  .drop svg{width:28px; height:28px; color:var(--ink-soft); margin-bottom:8px;}
+  .drop p{margin:0; font-size:13.5px; color:var(--ink-soft);}
+  .drop input{display:none;}
+
+  .file-list{list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .file-list li{
+    display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:13px;
+    background:var(--paper-dim); border:1px solid var(--line); padding:8px 10px; border-radius:8px;
+  }
+  .file-list li span.name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .file-list li button{background:none; border:none; color:var(--stamp); cursor:pointer; font-size:13px; font-weight:600;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:12.5px; font-weight:600; margin-bottom:6px; color:var(--ink-soft);}
+  .field input[type=text], .field input[type=number], .field select{
+    width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--line); font-family:var(--body); font-size:14px;
+  }
+  .field.row{display:flex; gap:10px;}
+  .field.row > div{flex:1;}
+
+  .thumbs{display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:10px; margin-bottom:16px; max-height:280px; overflow-y:auto; padding:4px;}
+  .thumb{position:relative; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--paper-dim);}
+  .thumb canvas{width:100%; display:block;}
+  .thumb .pnum{position:absolute; bottom:3px; left:3px; font-family:var(--mono); font-size:9px; background:rgba(20,33,61,.75); color:#fff; padding:1px 5px; border-radius:4px;}
+  .thumb .actions{position:absolute; top:3px; right:3px; display:flex; gap:3px;}
+  .thumb .actions button{width:18px; height:18px; font-size:10px; border:none; border-radius:4px; background:rgba(255,255,255,.9); cursor:pointer;}
+  .thumb.removed{opacity:.3;}
+  .thumb.removed canvas{filter:grayscale(1);}
+
+  .action-row{display:flex; gap:10px; margin-top:6px;}
+  .status{font-size:13px; color:var(--ink-soft); margin-top:10px; min-height:18px;}
+  .status.err{color:var(--stamp);}
+  .status.ok{color:var(--teal-dark);}
+
+  .soon-box{
+    border:1px solid var(--line); border-radius:12px; padding:20px; background:var(--paper-dim); font-size:13.5px; color:var(--ink-soft);
+  }
+  .soon-box b{color:var(--ink);}
+
+  footer{border-top:1px solid var(--line); padding:36px 28px; margin-top:20px;}
+  .footer-inner{max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+  footer p{font-size:13px; color:var(--ink-soft); margin:0;}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .stack{display:none;}
+    .how-inner{grid-template-columns:1fr;}
+    .hero{padding:48px 20px 40px;}
+  }
+  @media (max-width:720px){
+    .header-row{padding:14px 16px; gap:12px;}
+    .search-box{order:3; max-width:100%; flex-basis:100%;}
+    .hamburger{display:flex;}
+    nav.cats{
+      display:none; position:fixed; top:64px; left:16px; right:16px; z-index:60;
+      background:var(--paper); border:1px solid var(--line); border-radius:12px; box-shadow:0 16px 32px -10px var(--shadow-soft);
+      flex-direction:column; padding:8px; gap:2px; overflow:visible;
+    }
+    nav.cats.open{display:flex;}
+    nav.cats a{padding:12px 14px; border-radius:8px;}
+    .card{padding:16px;}
+    .modal{padding:22px 18px; max-height:92vh;}
+    .btn{width:100%; justify-content:center;}
+    .hero-cta{flex-direction:column;}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 30 36" fill="none"><path d="M4 2H20L26 8V34H4V2Z" stroke="var(--ink)" stroke-width="2" fill="var(--paper)"/><path d="M20 2V8H26" stroke="var(--ink)" stroke-width="2" fill="none"/><rect x="4" y="20" width="17" height="9" rx="1.5" fill="var(--stamp)"/></svg>
+      </span>
+      PDF Solutions
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#14213D" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="searchInput" type="text" placeholder="Tool dhoondein — jaise 'merge' ya 'compress'">
+    </div>
+    <nav class="cats" id="navCats">
+      <a href="#organize">Organize</a>
+      <a href="#convert">Convert</a>
+      <a href="#optimize">Optimize</a>
+      <a href="#edit">Edit</a>
+      <a href="#security">Security</a>
+      <a href="#intelligence">Intelligence</a>
+      <a href="#workflows">Workflows</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Dark mode toggle karein">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+    </button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu kholein"><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">27 tools · seedha browser mein</span>
+      <h1>Har PDF kaam,<br><em>ek hi jagah</em>, ek hi click mein.</h1>
+      <p class="sub">Merge karein, split karein, convert karein, ya compress — PDF Solutions se sab kuch seedha aapke browser mein hota hai. Kuch tools seedha yahin chalte hain, baaki jaldi aa rahe hain.</p>
+      <div class="hero-cta">
+        <a href="#organize" class="btn btn-primary">Tools dekhein</a>
+        <a href="#how" class="btn btn-ghost">Kaam kaise karta hai</a>
+      </div>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <div class="sheet s1"><div class="fold"></div><div class="line" style="top:100px;width:60%"></div><div class="line" style="top:120px;width:75%"></div></div>
+      <div class="sheet s2"><div class="fold"></div><div class="line" style="top:60px;width:50%"></div><div class="line" style="top:80px;width:70%"></div><div class="line" style="top:100px;width:65%"></div></div>
+      <div class="sheet s3"><div class="fold"></div><div class="line" style="top:50px;width:55%"></div><div class="line" style="top:70px;width:40%"></div><div class="badge">.PDF</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="step reveal"><span class="num">STEP 01</span><h3>File chunein</h3><p>Apni PDF, Word, ya image file seedha browser mein upload karein — kahin bhejni nahi padti.</p></div>
+    <div class="step reveal" style="animation-delay:100ms"><span class="num">STEP 02</span><h3>Tool set karein</h3><p>Jo chahiye vo adjust karein — pages, angle, watermark text, ya quality.</p></div>
+    <div class="step reveal" style="animation-delay:200ms"><span class="num">STEP 03</span><h3>Download karein</h3><p>Naya file turant taiyaar — apne device par save karein, bina wait kiye.</p></div>
+  </div>
+</section>
+
+<div id="categories"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="logo" style="font-size:15px;">
+      <span class="logo-mark" style="width:20px;height:24px;">
+        <svg viewBox="0 0 30 36" fill="none"><path d="M4 2H20L26 8V34H4V2Z" stroke="var(--ink)" stroke-width="2" fill="var(--paper)"/><rect x="4" y="20" width="17" height="9" rx="1.5" fill="var(--stamp)"/></svg>
+      </span>
+      PDF Solutions
+    </div>
+    <p>Client-side tools aapke browser mein chalte hain — files server par upload nahi hoti.</p>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+</script>
+<script src="app.js"></script>
+</body>
+</html>
